@@ -2,23 +2,7 @@ const Sequelize = require("sequelize").Sequelize; // Import Sequelize constructo
 const SessionModel = require("./models/session"); // Import session model
 
 // Create a new Sequelize instance to connect to PostgreSQL
-const sequelize = new Sequelize({
-  dialect: 'postgres', // Database dialect
-  dialectModule: require('pg'), // PostgreSQL module
-  database: process.env.POSTGRES_DATABASE, // Database name from environment variables
-  username: process.env.POSTGRES_USER, // Username from environment variables
-  password: process.env.POSTGRES_PASSWORD, // Password from environment variables
-  host: process.env.POSTGRES_HOST, // Host from environment variables
-  port: 5432, // Default PostgreSQL port
-  dialectOptions: {
-    ssl: {
-      require: true, // Require SSL connection
-      rejectUnauthorized: false // Set to true in production for security
-    }
-  },
-  connectTimeout: 30000, // Connection timeout in milliseconds
-  logging: console.log // Log SQL queries to the console
-});
+const sequelize = new Sequelize(process.env.POSTGRES_URL)
 
 // Authenticate the connection to the database
 sequelize.authenticate().then(() => {
