@@ -16,7 +16,7 @@ const sequelize = new Sequelize({
       rejectUnauthorized: false // Set to true in production for security
     }
   },
-  connectTimeout: 10000, // Connection timeout in milliseconds
+  connectTimeout: 30000, // Connection timeout in milliseconds
   logging: console.log // Log SQL queries to the console
 });
 
