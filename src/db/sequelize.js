@@ -37,7 +37,7 @@ sequelize.authenticate().then(() => {
 const Session = SessionModel(sequelize, Sequelize);
 
 // Sync the database, forcing a reset (use cautiously in production)
-// Session.sync({ force: true })
+Session.sync({ force: true })
 sequelize.sync({ force: true });
 
 module.exports = {
