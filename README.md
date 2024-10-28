@@ -77,7 +77,7 @@ This bot is configured to handle webhooks, allowing it to receive updates from T
 To set the webhook, use the following command, replacing YOUR_VERCEL_URL with your actual Vercel deployment URL:
 
    ```bash
-   curl -X POST "https://api.telegram.org/botYOUR_BOT_TOKEN/setWebhook?url=https://YOUR_VERCEL_URL/api"
+   curl -F "url=https://<YOUR_VERCEL_URL>/api" https://api.telegram.org/bot<TOKEN>/setWebhook
    ```
 
 ## Contributing
