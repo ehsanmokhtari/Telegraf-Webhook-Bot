@@ -15,7 +15,8 @@ module.exports = (sequelize, Sequelize) => {
     },
   }, {
     sequelize, // Pass the sequelize instance
-    modelName: "session" // Name of the model
+    modelName: "session", // Name of the model
+    tableName: 'sessions', // Name of the table
   });
 
   return Session; // Return the session model
