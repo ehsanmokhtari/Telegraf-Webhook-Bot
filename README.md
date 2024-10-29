@@ -2,7 +2,7 @@
 
 This project demonstrates how to create a Telegram bot using Node.js and the [Telegraf](https://github.com/telegraf/telegraf) library. The bot utilizes webhooks for event handling, allowing it to respond to user interactions in real-time. The bot is deployed on [Vercel](https://vercel.com), providing a serverless environment for easy scalability and management. It can handle various commands and messages, manage user sessions, and handle complex interactions through scenes.
 
-[![Live Demo](https://img.shields.io/badge/Medium-12100E?style=for-the-badge&logo=medium&logoColor=white)](https://medium.com/)
+[![Live Demo](https://img.shields.io/badge/Medium-12100E?style=for-the-badge&logo=medium&logoColor=white)](https://medium.com/@ehsanmokhtari/node-js-serverless-telegram-bot-with-telegraf-library-and-vercel-deployment-using-webhook-43262c234718)
 
 ## Features
 
@@ -50,11 +50,8 @@ Then, Update the .env file with your specific configuration, including your Tel
 
    ```plaintext
    BOT_TOKEN = "<YOUR_BOT_TOKEN>"
-   DEV = true
-   POSTGRES_HOST = "<POSTGRES_DATABASE_HOST>"
-   POSTGRES_DATABASE = "<POSTGRES_DATABASE>"
-   POSTGRES_USER = "<POSTGRES_DATABASE_USER>"
-   POSTGRES_PASSWORD = "<POSTGRES_DATABASE_PASSWORD>"
+   DEV = true #In production, This must be set to false
+   POSTGRES_URL = "postgres[ql]://[username[:password]@][host[:port],]/database[?parameter_list]"
    ```
 
 ### Running the Bot 
@@ -68,7 +65,7 @@ To run your bot locally, use the following command:
 
 For detailed instructions on deploying your bot to Vercel, check out the Medium article that explains the process step-by-step, including setting up your project, configuring environment variables, and managing deployments.
 
-[![Live Demo](https://img.shields.io/badge/Medium-12100E?style=for-the-badge&logo=medium&logoColor=white)](https://medium.com/)
+[![Live Demo](https://img.shields.io/badge/Medium-12100E?style=for-the-badge&logo=medium&logoColor=white)](https://medium.com/@ehsanmokhtari/node-js-serverless-telegram-bot-with-telegraf-library-and-vercel-deployment-using-webhook-43262c234718)
 
 ## Handling Webhooks
 
