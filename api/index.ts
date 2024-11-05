@@ -24,9 +24,10 @@ const handle = async (req: Request, res: Response): Promise<void> => {
 // Set up an endpoint for your webhook
 app.post("/webhook", handle); // Adjust the route as needed
 
-app.get("/", (req, res) => {
-	res.json("Hello, World!"); // Respond to GET requests
+app.get("/", (req: Request, res: Response) => {
+	res.send("Express on Vercel");
 });
+
 
 // Start the server
 const PORT = process.env.PORT || 3000; // Use environment variable or default to 3000
