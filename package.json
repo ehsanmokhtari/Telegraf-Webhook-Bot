@@ -1,9 +1,9 @@
 {
 	"name": "webhook_telegram_bot",
-	"version": "2.1.0",
-	"main": "api/index.js",
+	"version": "3.0.0",
+	"main": "api/index.ts",
 	"scripts": {
-		"dev": "dotenv -- nodemon -e js src/lib/telegram.js"
+		"dev": "dotenv -- nodemon -e ts -x ts-node src/lib/telegram.ts"
 	},
 	"keywords": [
 		"node.js",
@@ -20,13 +20,18 @@
 	"license": "ISC",
 	"description": "Node.js Telegram Bot with Telegraf Webhook and Vercel Deployment",
 	"dependencies": {
+		"express": "^4.21.1",
 		"pg": "^8.13.1",
 		"pg-hstore": "^2.3.4",
 		"sequelize": "^6.37.5",
 		"telegraf": "^4.16.3"
 	},
 	"devDependencies": {
+		"@types/express": "^5.0.0",
+		"@types/node": "^22.9.0",
 		"dotenv-cli": "^7.4.2",
-		"nodemon": "^3.1.7"
+		"nodemon": "^3.1.7",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.6.3"
 	}
 }

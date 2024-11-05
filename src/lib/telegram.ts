@@ -1,22 +1,18 @@
 // Import necessary modules from Telegraf
-const { Telegraf, session, Scenes } = require('telegraf');
-// Import message filter for handling text messages
-const { message } = require('telegraf/filters');
-// Import message handlers for specific responses
-const { hiMessage, stickerMessage, textMessage } = require('../handlers/messages');
-// Import command handlers for bot commands
-const { helpCommand } = require('../handlers/commands');
-// Import session store for PostgreSQL database
-const PostgresSessionStore = require('../db/sessionStore');
-// Import scenes for managing complex interactions
-const { superWizard, echoScene, greeterScene } = require('../scenes');
+import { Telegraf, Context, session, Scenes } from 'telegraf';
+import { message } from 'telegraf/filters';
+import { hiMessage, stickerMessage, textMessage } from '../handlers/messages';
+import { helpCommand } from '../handlers/commands';
+import PostgresSessionStore from '../db/sessionStore';
+import { superWizard, echoScene, greeterScene } from '../scenes';
+import { MyContext } from '../telegraf';
 
 // Environment variables for development mode and bot configuration
-const isDev = process.env.DEV;
-const BOT_TOKEN = process.env.BOT_TOKEN;
+const isDev = process.env.DEV === 'true';
+const BOT_TOKEN = process.env.BOT_TOKEN as string; // Ensure BOT_TOKEN is a string
 
 // Creating a new Telegraf bot instance with the provided token
-const bot = new Telegraf(BOT_TOKEN);
+const bot = new Telegraf<MyContext>(BOT_TOKEN);
 
 // Function to set up bot commands and middleware
 function botUtils() {
@@ -29,13 +25,12 @@ function botUtils() {
 
     // Use the session middleware in the bot, configuring it with the session store
     bot.use(session({
-        // Define a function to get the unique session key based on the chat ID
-        getSessionKey: (ctx) => ctx.chat.id.toString(), // Convert chat ID to string for use as a session key
-        store, // Pass the session store instance to manage session data
+        getSessionKey: (ctx) => ctx.chat?.id.toString() || '', // Optional chaining for safety
+        store,
     }));
 
     // Create a new Stage instance with defined scenes and a time-to-live (TTL) of 10 minutes
-    const stage = new Scenes.Stage([superWizard, echoScene, greeterScene]);
+    const stage = new Scenes.Stage<MyContext>([superWizard, echoScene, greeterScene]);
 
     // Use the stage middleware to manage scene transitions
     bot.use(stage.middleware());
@@ -47,13 +42,13 @@ function botUtils() {
     });
     
     // Command to enter the "greeter" scene when the user types /greeter
-    bot.command("greeter", ctx => ctx.scene.enter("greeter"));
+    bot.command("greeter", (ctx) => ctx.scene.enter("greeter"));
 
     // Command to enter the "echo" scene when the user types /echo
-    bot.command("echo", ctx => ctx.scene.enter("echo"));
+    bot.command("echo", (ctx) => ctx.scene.enter("echo"));
 
     // Command to enter the "super-wizard" scene when the user types /super-wizard
-    bot.command("superwizard", ctx => ctx.scene.enter("super-wizard"));
+    bot.command("superwizard", (ctx) => ctx.scene.enter("super-wizard"));
 
     // Command handler for the /help command
     bot.help(helpCommand());
@@ -64,12 +59,12 @@ function botUtils() {
     // Handler for greeting messages
     bot.hears('hi', hiMessage());
 
-    // Handler for receiving stickers
+    // Handler for receiving text messages
     bot.on(message('text'), textMessage());
 }
 
 // Logger middleware to track response times
-const logger = async (_, next) => {
+const logger = async (ctx: Context, next: () => Promise<void>) => {
     const start = new Date(); // Record start time
     await next(); // Call the next middleware
     const ms = new Date().getTime() - start.getTime(); // Calculate response time
@@ -77,7 +72,7 @@ const logger = async (_, next) => {
 };
 
 // Function to handle webhook requests
-async function useWebhook(req, res) {
+async function useWebhook(req: any, res: any) { // Adjust types as needed
     try {
         // Initialize bot commands and middleware
         botUtils();
@@ -89,16 +84,18 @@ async function useWebhook(req, res) {
             res.status(200).json("Listening to bot events..."); // Respond to GET requests
         }
     } catch (error) {
-        console.error(error); // Log any errors
-        return error.message; // Return the error message
+        if (error instanceof Error) {
+            return error.message; // Now this is safe
+        } else {
+            return 'An unknown error occurred'; // Fallback for unknown types
+        }
     }
 }
 
 // Function to run the bot in local development mode
 async function localBot() {
     const botInfo = await bot.telegram.getMe();
-    bot.options.username = botInfo.username; // Set bot username
-
+    
     console.info("Server has initialized bot username: ", botInfo.username);
 
     await bot.telegram.deleteWebhook(); // Delete any existing webhook
@@ -120,11 +117,11 @@ if (isDev) {
 }
 
 // Enable graceful stop
-process.once('SIGINT', () => bot.stop('SIGINT'))
-process.once('SIGTERM', () => bot.stop('SIGTERM'))
+process.once('SIGINT', () => bot.stop('SIGINT'));
+process.once('SIGTERM', () => bot.stop('SIGTERM'));
 
 // Exporting the bot, useWebhook function, and logger middleware for external use
-module.exports = {
+export {
     bot,
     useWebhook
 };
