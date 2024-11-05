@@ -6,6 +6,9 @@ const sequelize = new Sequelize(process.env.POSTGRES_URL as string, {
 	dialect: "postgres", // Database dialect
 	dialectModule: require("pg"), // PostgreSQL module
 	logging: console.log, // Log SQL queries to the console
+	dialectOptions: {
+		connectTimeout: 60000,
+	},
 });
 
 // Authenticate the connection to the database
