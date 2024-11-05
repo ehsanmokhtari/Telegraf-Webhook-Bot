@@ -22,7 +22,7 @@ const handle = async (req: Request, res: Response): Promise<void> => {
 };
 
 // Set up an endpoint for your webhook
-app.post("/webhook", handle); // Adjust the route as needed
+app.post("/api", handle); // Adjust the route as needed
 
 app.get("/", (req: Request, res: Response) => {
 	res.send("Express on Vercel");
