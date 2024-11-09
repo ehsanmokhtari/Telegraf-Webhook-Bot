@@ -2,6 +2,7 @@ import { Context, Scenes } from "telegraf";
 
 interface SessionData extends Scenes.WizardSession {
 	stickerCount: number;
+	data: string;
 	// ... more session data go here
 }
 
