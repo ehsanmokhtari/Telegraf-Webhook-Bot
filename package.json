@@ -1,5 +1,5 @@
 {
-	"name": "webhook_telegram_bot",
+	"name": "telegraf-webhook-bot",
 	"version": "3.0.0",
 	"main": "api/index.ts",
 	"scripts": {
@@ -28,7 +28,6 @@
 	},
 	"devDependencies": {
 		"@types/express": "^5.0.0",
-		"@types/node": "^22.9.0",
 		"dotenv-cli": "^7.4.2",
 		"nodemon": "^3.1.7",
 		"ts-node": "^10.9.2",
