@@ -1,16 +1,19 @@
 {
   "compilerOptions": {
     "strict": true,
-    "target": "esnext",
+    "target": "ES6",
     "moduleResolution": "node",
     "module": "commonjs",
     "sourceMap": true,
     "outDir": "dist",
-    "lib": ["esnext", "dom"],
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "noImplicitAny": true,
     "forceConsistentCasingInFileNames": true,
   },
+  "include": [
+        "src/**/*",
+        "api/**/*",
+    ],
   "exclude": ["node_modules"]
 }
