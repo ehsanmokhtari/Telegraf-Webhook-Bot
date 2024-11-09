@@ -1,5 +1,5 @@
 import { Session } from './sequelize'; // Import the Session model
-import { SessionData } from '../telegraf';
+import { SessionData } from '../lib/telegraf';
 
 // Class to manage session storage in a PostgreSQL database
 class PostgresSessionStore {

@@ -1,4 +1,4 @@
-import { MyContext } from "../../telegraf"; // Import the Context type
+import { MyContext } from "../../lib/telegraf"; // Import the Context type
 
 const stickerMessage =
 	() =>
