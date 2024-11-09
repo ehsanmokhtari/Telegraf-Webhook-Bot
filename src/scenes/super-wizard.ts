@@ -1,5 +1,7 @@
 import { Composer, Markup, Scenes } from "telegraf"; // Import necessary modules from Telegraf
-import { MyContext } from "../telegraf";
+import { MyContext } from "../lib/telegraf";
+
+const { leave } = Scenes.Stage;
 
 // Create a new Composer instance to handle step actions
 const stepHandler = new Composer<MyContext>();
@@ -55,5 +57,11 @@ superWizard.enter((ctx) =>
 	ctx.reply("Welcome to Super Wizard Scene: Please Send Message")
 );
 
+// Command to go back from the echo scene to the previous scene
+superWizard.command("back", leave<MyContext>()); // Use the leave function to exit the current scene
+
+// Handler for when the scene is exited
+superWizard.leave((ctx) => ctx.reply("Super Wizard Scene: Bye"));
+
 // Export the superWizard scene for use in other modules
-export default superWizard; // Use export default for TypeScript compatibility
+export default superWizard;
