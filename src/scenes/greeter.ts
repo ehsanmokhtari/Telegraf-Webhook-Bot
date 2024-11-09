@@ -1,17 +1,20 @@
 import { Scenes } from "telegraf"; // Import necessary modules from Telegraf
-import { MyContext } from "../telegraf";
-
+import { MyContext } from "../lib/telegraf";
 
 const { enter, leave } = Scenes.Stage;
 // Create a new scene called "greeter"
 const greeterScene = new Scenes.BaseScene<MyContext>("greeter");
 
 // Handler for when the scene is entered
-greeterScene.enter((ctx) =>
-	ctx.reply(
-		"Welcome to Greeter Scene: Please Send\n hi message\n any message\n /back command"
-	)
-); // Send a greeting message when entering the greeter scene
+greeterScene.enter((ctx) => {
+	const helpMessage =
+		"Welcome to the Greeter Scene! Here’s how to use it:\n\n" +
+		"1. Send 'hi' to re-enter the greeter scene.\n" +
+		"2. If you want to exit this scene, type /back.\n" +
+		"3. I will prompt you to send 'hi' if you send any other message.";
+
+	ctx.reply(helpMessage);
+}); // Send a greeting message when entering the greeter scene
 
 // Handler for when the scene is exited
 greeterScene.leave((ctx) => ctx.reply("Greeter Scene: Bye")); // Send a farewell message when leaving the greeter scene

@@ -25,9 +25,28 @@ const handle = async (req: Request, res: Response): Promise<void> => {
 app.post("/api", handle); // Adjust the route as needed
 
 app.get("/", (req: Request, res: Response) => {
-	res.send("Express on Vercel");
-});
+	res.send(`
+		<!DOCTYPE html>
+		<html lang="en">
+		<head>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<title>Webhook Response</title>
+			<style>
+				body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }
+				h1 { color: #333; }
+				p { color: #555; }
+				a { color: #007bff; text-decoration: none; }
+			</style>
+		</head>
+		<body>
+			<h1>Bot Is Running</h1>
 
+			<p>You can see a working version of the bot at <a href="https://t.me/TelegrafWebhookTestBot">@TelegrafWebhookTestBot</a></p>
+		</body>
+		</html>
+	`);
+});
 
 // Start the server
 const PORT = process.env.PORT || 3000; // Use environment variable or default to 3000
