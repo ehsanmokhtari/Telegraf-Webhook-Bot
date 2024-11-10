@@ -20,7 +20,7 @@ greeterScene.enter((ctx) => {
 greeterScene.leave(async (ctx) => {
 	await ctx.reply("Greeter Scene: exiting greeter scene");
 	const mainMessage =
-		"Welcome! Here are the commands you can use:\n\n" +
+		"Here are the commands you can use:\n\n" +
 		"/greeter - Enter the greeter scene.\n" +
 		"/echo - Enter the echo scene.\n" +
 		"/superwizard - Enter the super wizard scene.\n" +

@@ -64,7 +64,7 @@ superWizard.command("back", leave<MyContext>()); // Use the leave function to ex
 superWizard.leave(async (ctx) => {
 	await ctx.reply("Super Wizard Scene: exiting super wizard scene");
 	const mainMessage =
-		"Welcome! Here are the commands you can use:\n\n" +
+		"Here are the commands you can use:\n\n" +
 		"/greeter - Enter the greeter scene.\n" +
 		"/echo - Enter the echo scene.\n" +
 		"/superwizard - Enter the super wizard scene.\n" +
