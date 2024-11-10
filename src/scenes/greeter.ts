@@ -17,7 +17,19 @@ greeterScene.enter((ctx) => {
 }); // Send a greeting message when entering the greeter scene
 
 // Handler for when the scene is exited
-greeterScene.leave((ctx) => ctx.reply("Greeter Scene: Bye")); // Send a farewell message when leaving the greeter scene
+greeterScene.leave(async (ctx) => {
+	await ctx.reply("Greeter Scene: exiting greeter scene");
+	const mainMessage =
+		"Welcome! Here are the commands you can use:\n\n" +
+		"/greeter - Enter the greeter scene.\n" +
+		"/echo - Enter the echo scene.\n" +
+		"/superwizard - Enter the super wizard scene.\n" +
+		"/help - Get help information about commands.\n" +
+		"Say 'hi' to receive a greeting!\n" +
+		"Send a sticker to see a fun response.\n" +
+		"You can also send any text message for a response.";
+	await ctx.reply(mainMessage);
+}); // Send a farewell message when leaving the greeter scene
 
 // Command to go back from the echo scene to the previous scene
 greeterScene.command("back", leave<MyContext>()); // Use the leave function to exit the current scene

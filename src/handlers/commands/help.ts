@@ -5,7 +5,7 @@ const helpCommand =
 	async (ctx: Context): Promise<void> => {
 		console.log("Help command received:", ctx.from);
 		const helpMessage =
-			"Welcome! Here are the commands you can use:\n\n" +
+			"Here are the commands you can use:\n\n" +
 			"/greeter - Enter the greeter scene.\n" +
 			"/echo - Enter the echo scene.\n" +
 			"/superwizard - Enter the super wizard scene.\n" +

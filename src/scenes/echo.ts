@@ -21,7 +21,19 @@ echoScene.enter((ctx) => {
 	ctx.reply(helpMessage);
 });
 // Handler for when the scene is exited
-echoScene.leave((ctx) => ctx.reply("Echo Scene: exiting echo scene")); // Send a message when leaving the echo scene
+echoScene.leave(async (ctx) => {
+	await ctx.reply("Echo Scene: exiting echo scene");
+	const mainMessage =
+		"Here are the commands you can use:\n\n" +
+		"/greeter - Enter the greeter scene.\n" +
+		"/echo - Enter the echo scene.\n" +
+		"/superwizard - Enter the super wizard scene.\n" +
+		"/help - Get help information about commands.\n" +
+		"Say 'hi' to receive a greeting!\n" +
+		"Send a sticker to see a fun response.\n" +
+		"You can also send any text message for a response.";
+	await ctx.reply(mainMessage);
+}); // Send a message when leaving the echo scene
 
 // Command to go back from the echo scene to the previous scene
 echoScene.command("back", leave<MyContext>()); // Use the leave function to exit the current scene
