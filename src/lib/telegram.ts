@@ -58,21 +58,6 @@ function botUtils() {
 		ctx.reply(welcomeMessage);
 	});
 
-	bot.command("setdata", async (ctx) => {
-		if (!ctx.session) {
-			throw new Error("Session is not available");
-		}
-		ctx.session.data = "This is a test";
-		ctx.reply("Session data set!");
-	});
-
-	bot.command("getdata", (ctx) => {
-		if (!ctx.session) {
-			throw new Error("Session is not available");
-		}
-		ctx.reply(`Session data: ${ctx.session.data}`);
-	});
-
 	// Command to enter the "greeter" scene when the user types /greeter
 	bot.command("greeter", (ctx) => ctx.scene.enter("greeter"));
 
