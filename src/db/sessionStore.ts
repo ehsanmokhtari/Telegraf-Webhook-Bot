@@ -19,7 +19,7 @@ class PostgresSessionStore {
 			// Use upsert to either insert a new session or update an existing one
 			await Session.upsert({
 				chatId,
-				data: JSON.stringify(data), // Store session data as a string
+				data: data, // Store session data as a string
 				createdAt: now, // Set createdAt
 				updatedAt: now, // Set updatedAt
 			});
