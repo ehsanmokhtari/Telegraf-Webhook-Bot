@@ -5,6 +5,8 @@ export default (sequelize: Sequelize) => {
 	class Session extends Model {
 		public chatId!: string; // Chat ID as a string
 		public data!: object; // Session data stored as JSONB
+		createdAt!: Date; // Created at timestamp
+		updatedAt!: Date; // Updated at timestamp
 	}
 
 	// Initialize the session model with fields
@@ -16,6 +18,16 @@ export default (sequelize: Sequelize) => {
 			},
 			data: {
 				type: DataTypes.JSONB, // Session data stored as JSONB
+			},
+			createdAt: {
+				type: DataTypes.DATE,
+				allowNull: false,
+				defaultValue: DataTypes.NOW, // Automatically set to current date
+			},
+			updatedAt: {
+				type: DataTypes.DATE,
+				allowNull: false,
+				defaultValue: DataTypes.NOW, // Automatically set to current date
 			},
 		},
 		{
