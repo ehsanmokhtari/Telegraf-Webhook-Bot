@@ -1,28 +1,41 @@
-import { Session } from './sequelize'; // Import the Session model
-import { SessionData } from '../lib/telegraf';
+import { Session } from "./sequelize"; // Import the Session model
+import { SessionData } from "../lib/telegraf";
 
 // Class to manage session storage in a PostgreSQL database
 class PostgresSessionStore {
-  
-  // Retrieve session data by chat ID
-  async get(chatId: string): Promise<SessionData | undefined> {
-    console.log('get method called with chatId:', chatId);
-    const session = await Session.findOne({ where: { chatId } });
-    console.log('get method found session:', session);
-    return session ? (session.data as SessionData) : undefined; // Return session data or undefined if not found
-  }
+	// Retrieve session data by chat ID
+	async get(chatId: string): Promise<SessionData | undefined> {
+		console.log(`Getting session for chatId: ${chatId}`);
+		const session = await Session.findOne({ where: { chatId } });
+		console.log("get method found session:", session);
+		return session ? (session.data as SessionData) : undefined; // Return session data or undefined if not found
+	}
 
-  // Save or update session data by chat ID
-  async set(chatId: string, data: SessionData): Promise<void> {
-    console.log('set method called with chatId:', chatId);
-    console.log('set method called with data:', data);
-    await Session.upsert({ chatId, data }); // Inserts or updates session data
-  }
+	// Save or update session data by chat ID
+	async set(chatId: string, data: object): Promise<void> {
+		console.log(`Setting session for chatId: ${chatId}`, data);
+		try {
+			// Use upsert to either insert a new session or update an existing one
+			await Session.upsert({
+				chatId,
+				data: JSON.stringify(data), // Ensure data is stored as a string
+			});
+			console.log(`Session data for chatId ${chatId} set successfully.`);
+		} catch (error) {
+			console.error(`Error setting session data for chatId ${chatId}:`, error);
+		}
+	}
 
-  // Delete session data by chat ID
-  async delete(chatId: string): Promise<void> {
-    await Session.destroy({ where: { chatId } }); // Remove session from the database
-  }
+	// Delete session data by chat ID
+	async delete(chatId: string): Promise<void> {
+		console.log(`Deleting session for chatId: ${chatId}`);
+		try {
+			await Session.destroy({ where: { chatId } });
+			console.log(`Session for chatId ${chatId} deleted successfully.`);
+		} catch (error) {
+			console.error(`Error deleting session for chatId ${chatId}:`, error);
+		}
+	}
 }
 
 export default PostgresSessionStore; // Export the class for use in other modules
