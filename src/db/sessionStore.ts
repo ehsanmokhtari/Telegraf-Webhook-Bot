@@ -3,7 +3,6 @@ import { SessionData } from "../lib/telegraf";
 
 // Class to manage session storage in a PostgreSQL database
 class PostgresSessionStore {
-  
 	// Retrieve session data by chat ID
 	async get(chatId: string): Promise<SessionData | undefined> {
 		try {
@@ -24,8 +23,6 @@ class PostgresSessionStore {
 			await Session.upsert({
 				chatId,
 				data: data, // Store session data as a string
-				createdAt: now, // Set createdAt
-				updatedAt: now, // Set updatedAt
 			});
 			console.log(`Session data for chatId ${chatId} set successfully.`);
 		} catch (error) {

@@ -2,11 +2,11 @@ import { Model, DataTypes, Sequelize } from "sequelize";
 
 // Define the session model for Sequelize
 export default (sequelize: Sequelize) => {
+
+	// Define the Session model interface for TypeScript
 	class Session extends Model {
-		public chatId!: string; // Chat ID as a string
-		public data!: object; // Session data stored as JSONB
-		createdAt!: Date; // Created at timestamp
-		updatedAt!: Date; // Updated at timestamp
+		declare chatId: string; // Chat ID as a string
+		declare data: object; // Session data stored as JSONB
 	}
 
 	// Initialize the session model with fields
@@ -19,22 +19,11 @@ export default (sequelize: Sequelize) => {
 			data: {
 				type: DataTypes.JSONB, // Session data stored as JSONB
 			},
-			createdAt: {
-				type: DataTypes.DATE,
-				allowNull: false,
-				defaultValue: DataTypes.NOW, // Automatically set to current date
-			},
-			updatedAt: {
-				type: DataTypes.DATE,
-				allowNull: false,
-				defaultValue: DataTypes.NOW, // Automatically set to current date
-			},
 		},
 		{
 			sequelize, // Pass the sequelize instance
 			modelName: "session", // Name of the model
 			tableName: "sessions", // Name of the table
-			timestamps: false, // Disable timestamps if not needed
 		}
 	);
 
