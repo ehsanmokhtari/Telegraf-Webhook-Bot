@@ -16,7 +16,10 @@
 		"sequelize",
 		"postgresql"
 	],
-	"author": "Ehsan Mokhtari (Ehsan69Mokhtari@gmail.com)",
+	"author": {
+		"name": "Ehsan Mokhtari",
+		"email": "Ehsan69Mokhtari@gmail.com"
+	},
 	"license": "ISC",
 	"description": "Node.js Telegram Bot with Telegraf Webhook and Vercel Deployment",
 	"dependencies": {
