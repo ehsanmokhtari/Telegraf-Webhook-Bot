@@ -1,19 +1,16 @@
 {
-  "compilerOptions": {
-    "strict": true,
-    "target": "ES6",
-    "moduleResolution": "node",
-    "module": "commonjs",
-    "sourceMap": true,
-    "outDir": "dist",
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "noImplicitAny": true,
-    "forceConsistentCasingInFileNames": true,
-  },
-  "include": [
-        "src/**/*",
-        "api/**/*",
-    ],
-  "exclude": ["node_modules"]
+	"compilerOptions": {
+		"strict": true,
+		"target": "ESNext",
+		"moduleResolution": "node",
+		"module": "commonjs",
+		"sourceMap": true,
+		"esModuleInterop": true,
+		"noImplicitAny": true,
+		"outDir": "dist",
+		"lib": ["ESNext", "DOM"],
+		"forceConsistentCasingInFileNames": true,
+		"skipLibCheck": true
+	},
+	"exclude": ["node_modules"]
 }
