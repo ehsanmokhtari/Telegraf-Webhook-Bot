@@ -8,20 +8,24 @@ const stepHandler = new Composer<MyContext>();
 
 // Action handler for the inline button with the callback "next"
 stepHandler.action("next", async (ctx) => {
-	await ctx.reply("Super Wizard: Step 2. Via inline button"); // Reply indicating the next step
+	await ctx.reply(
+		"Super Wizard: [Step 2 (Via inline button)] Please Send Message"
+	); // Reply indicating the next step
 	return ctx.wizard.next(); // Move to the next step in the wizard
 });
 
 // Command handler for the command "/next"
 stepHandler.command("next", async (ctx) => {
-	await ctx.reply("Super Wizard: Step 2. Via command"); // Reply indicating the next step
+	await ctx.reply("Super Wizard: [Step 2 (Via command)] Please Send Message"); // Reply indicating the next step
 	return ctx.wizard.next(); // Move to the next step in the wizard
 });
 
 // Default handler for any other messages in the step
 stepHandler.use(
 	(ctx) =>
-		ctx.replyWithMarkdownV2("Super Wizard: Press `Next` button or type /next") // Prompt the user to press the button or type the command
+		ctx.replyWithMarkdownV2(
+			"Super Wizard: [Step 1] Press `Next` button or type /next"
+		) // Prompt the user to press the button or type the command
 );
 
 // Create a new WizardScene called "super-wizard"
@@ -30,7 +34,7 @@ const superWizard = new Scenes.WizardScene(
 	async (ctx) => {
 		// Handler for the first step
 		await ctx.reply(
-			"Super Wizard: Step 1", // Send a message for Step 1
+			"Super Wizard: [Step 1]", // Send a message for Step 1
 			Markup.inlineKeyboard([
 				// Create an inline keyboard with buttons
 				Markup.button.url("❤️", "https://github.com/ehsanmokhtari/test_bot"), // Button linking to Telegraf documentation
@@ -41,13 +45,8 @@ const superWizard = new Scenes.WizardScene(
 	},
 	stepHandler, // Use the stepHandler for handling actions and commands
 	async (ctx) => {
-		// Handler for the third step
-		await ctx.reply("Super Wizard: Step 3"); // Send a message for Step 3
-		return ctx.wizard.next(); // Move to the next step in the wizard
-	},
-	async (ctx) => {
 		// Final step handler
-		await ctx.reply("Super Wizard: Done"); // Send a completion message
+		await ctx.reply("Super Wizard: [Step 3] Done"); // Send a completion message
 		return await ctx.scene.leave(); // Leave the scene
 	}
 );
@@ -62,7 +61,7 @@ superWizard.command("back", leave<MyContext>()); // Use the leave function to ex
 
 // Handler for when the scene is exited
 superWizard.leave(async (ctx) => {
-	await ctx.reply("Super Wizard Scene: exiting super wizard scene");
+	await ctx.reply("Super Wizard Scene: Exiting super wizard scene");
 	const mainMessage =
 		"Here are the commands you can use:\n\n" +
 		"/greeter - Enter the greeter scene.\n" +
