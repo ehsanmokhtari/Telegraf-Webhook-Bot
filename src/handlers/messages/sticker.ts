@@ -1,12 +1,12 @@
-import { MyContext } from "../../lib/telegraf"; // Import the Context type
+import { MyContext } from "../../lib/telegraf";
 
 const stickerMessage =
 	() =>
 	async (ctx: MyContext): Promise<void> => {
-		// Use type assertion to assume ctx.session is never undefined
-		ctx.session = ctx.session || { stickerCount: 0 }; // Ensure session is initialized
+		// Initialize the session if it doesn't exist yet, with an zero sticker count by default.
+		ctx.session = ctx.session ?? { stickerCount: 0 };   
 		// Increment the sticker count for the current session
-		ctx.session.stickerCount = ctx.session.stickerCount + 1;
+		ctx.session.stickerCount++;
 		// Reply to the user with the total number of stickers seen in this session
 		console.log("Received a sticker from:", ctx.from);
 		await ctx.reply(`👍 Seen ${ctx.session.stickerCount} stickers.`);

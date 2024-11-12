@@ -1,5 +1,5 @@
 // Import necessary modules from Telegraf
-import { Telegraf, Context, session, Scenes } from "telegraf";
+import { Telegraf, session, Scenes } from "telegraf";
 import { message } from "telegraf/filters";
 import { hiMessage, stickerMessage, textMessage } from "../handlers/messages";
 import { helpCommand } from "../handlers/commands";
@@ -29,6 +29,7 @@ function botUtils() {
 		session({
 			getSessionKey: (ctx) => ctx.chat?.id.toString() || "", // Optional chaining for safety
 			store,
+			defaultSession: () => ({ stickerCount: 0 }) // Initialize stickerCount to 0 for new sessions
 		})
 	);
 
@@ -81,7 +82,7 @@ function botUtils() {
 }
 
 // Logger middleware to track response times
-const logger = async (ctx: Context, next: () => Promise<void>) => {
+const logger = async (ctx: MyContext, next: () => Promise<void>) => {
 	const start = new Date(); // Record start time
 	await next(); // Call the next middleware
 	const ms = new Date().getTime() - start.getTime(); // Calculate response time
