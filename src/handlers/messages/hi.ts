@@ -1,8 +1,8 @@
-import { Context } from "telegraf"; // Import the Context type from Telegraf
+import { MyContext } from "../../lib/telegraf";
 
 const hiMessage =
 	() =>
-	async (ctx: Context): Promise<void> => {
+	async (ctx: MyContext): Promise<void> => {
 		console.log("Greeting received from:", ctx.from);
 		await ctx.reply("Hey there"); // Reply with a friendly greeting
 	};

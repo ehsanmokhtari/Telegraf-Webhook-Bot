@@ -1,8 +1,8 @@
-import { Context } from "telegraf"; // Import the Context type from Telegraf
+import { MyContext } from "../../lib/telegraf";
 
 const helpCommand =
 	() =>
-	async (ctx: Context): Promise<void> => {
+	async (ctx: MyContext): Promise<void> => {
 		console.log("Help command received:", ctx.from);
 		const helpMessage =
 			"Here are the commands you can use:\n\n" +
