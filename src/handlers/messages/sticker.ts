@@ -3,10 +3,10 @@ import { MyContext } from "../../lib/telegraf"; // Import the Context type
 const stickerMessage =
 	() =>
 	async (ctx: MyContext): Promise<void> => {
-		// Set a default session object if it doesn't exist
-		ctx.session ??= { stickerCount: 0 }; // Use nullish coalescing assignment to initialize stickerCount
+		// Use type assertion to assume ctx.session is never undefined
+		ctx.session = ctx.session || { stickerCount: 0 }; // Ensure session is initialized
 		// Increment the sticker count for the current session
-		ctx.session.stickerCount += 1;
+		ctx.session.stickerCount = ctx.session.stickerCount + 1;
 		// Reply to the user with the total number of stickers seen in this session
 		console.log("Received a sticker from:", ctx.from);
 		await ctx.reply(`👍 Seen ${ctx.session.stickerCount} stickers.`);
