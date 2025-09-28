@@ -7,19 +7,33 @@ import PostgresSessionStore from "../db/sessionStore";
 import { superWizard, echoScene, greeterScene } from "../scenes";
 import { MyContext } from "./telegraf";
 import { Request, Response } from "express"; // Import Express and its types
+import logger from "./logger";
+import { handleBotError, BotError } from "./errorHandler";
 
 // Environment variables for development mode and bot configuration
 const isDev = process.env.DEV === "true";
 const BOT_TOKEN = process.env.BOT_TOKEN as string; // Ensure BOT_TOKEN is a string
+
+// Validate required environment variables
+if (!BOT_TOKEN) {
+  logger.error('BOT_TOKEN is required but not provided');
+  throw new BotError('BOT_TOKEN environment variable is required');
+}
 
 // Creating a new Telegraf bot instance with the provided token
 const bot = new Telegraf<MyContext>(BOT_TOKEN);
 
 // Function to set up bot commands and middleware
 function botUtils() {
+	// Error handling middleware
+	bot.catch((err, ctx) => {
+		logger.error('Unhandled bot error:', err);
+		handleBotError(ctx, err);
+	});
+
 	// Logging middleware
 	bot.use(Telegraf.log());
-	bot.use(logger);
+	bot.use(responseTimeLogger);
 
 	// Create an instance of the PostgresSessionStore for session management
 	const store = new PostgresSessionStore();
@@ -82,62 +96,83 @@ function botUtils() {
 }
 
 // Logger middleware to track response times
-const logger = async (ctx: MyContext, next: () => Promise<void>) => {
+const responseTimeLogger = async (ctx: MyContext, next: () => Promise<void>) => {
 	const start = new Date(); // Record start time
 	await next(); // Call the next middleware
 	const ms = new Date().getTime() - start.getTime(); // Calculate response time
-	console.log("Response time: %sms", ms); // Log the response time
+	logger.http(`Response time: ${ms}ms for user ${ctx.from?.id}`); // Log the response time
 };
 
 // Function to handle webhook requests
 async function useWebhook(req: Request, res: Response) {
-	// Adjust types as needed
 	try {
 		// Initialize bot commands and middleware
 		botUtils();
 
 		// Handle incoming requests
 		if (req.method === "POST") {
+			logger.info(`Received webhook update from ${req.ip}`);
 			await bot.handleUpdate(req.body, res); // Process the update
 		} else {
-			res.status(200).json("Listening to bot events..."); // Respond to GET requests
+			res.status(200).json({ 
+				status: "ok", 
+				message: "Bot webhook is running",
+				timestamp: new Date().toISOString()
+			}); // Respond to GET requests
 		}
 	} catch (error) {
-		if (error instanceof Error) {
-			return error.message; // Now this is safe
+		logger.error('Webhook error:', error);
+		if (error instanceof BotError) {
+			res.status(error.statusCode).json({ 
+				error: error.message,
+				status: "error"
+			});
 		} else {
-			return "An unknown error occurred"; // Fallback for unknown types
+			res.status(500).json({ 
+				error: "Internal server error",
+				status: "error"
+			});
 		}
 	}
 }
 
 // Function to run the bot in local development mode
 async function localBot() {
-	const botInfo = await bot.telegram.getMe();
+	try {
+		const botInfo = await bot.telegram.getMe();
+		logger.info(`Bot initialized: @${botInfo.username} (${botInfo.first_name})`);
 
-	console.info("Server has initialized bot username: ", botInfo.username);
+		await bot.telegram.deleteWebhook(); // Delete any existing webhook
+		logger.info('Webhook deleted for local development');
 
-	await bot.telegram.deleteWebhook(); // Delete any existing webhook
-
-	await bot.launch(); // Start polling for updates
+		await bot.launch(); // Start polling for updates
+		logger.info('Bot is running in polling mode');
+	} catch (error) {
+		logger.error('Failed to start bot locally:', error);
+		throw error;
+	}
 }
 
 // If running in development mode, start the bot
 if (isDev) {
-	console.log("isDev", isDev);
-
-	localBot().then(() => {
-		// Initialize bot commands and middleware
-		botUtils();
-
-		// Launch the bot
-		bot.launch();
+	logger.info("Starting bot in development mode");
+	
+	localBot().catch((error) => {
+		logger.error('Failed to start bot:', error);
+		process.exit(1);
 	});
 }
 
 // Enable graceful stop
-process.once("SIGINT", () => bot.stop("SIGINT"));
-process.once("SIGTERM", () => bot.stop("SIGTERM"));
+process.once("SIGINT", () => {
+	logger.info('Received SIGINT, stopping bot gracefully...');
+	bot.stop("SIGINT");
+});
+
+process.once("SIGTERM", () => {
+	logger.info('Received SIGTERM, stopping bot gracefully...');
+	bot.stop("SIGTERM");
+});
 
 // Exporting the bot, useWebhook function, and logger middleware for external use
 export { bot, useWebhook };

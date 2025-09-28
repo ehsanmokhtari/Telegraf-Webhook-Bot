@@ -1,86 +1,228 @@
-# Node.js Telegram Bot with Telegraf Webhook and Vercel Deployment
+# 🤖 Telegraf Webhook Bot
 
-This project demonstrates how to create a Telegram bot using Node.js and the [Telegraf](https://github.com/telegraf/telegraf) library. The bot utilizes webhooks for event handling, allowing it to respond to user interactions in real-time. The bot is deployed on [Vercel](https://vercel.com), providing a serverless environment for easy scalability and management. It can handle various commands and messages, manage user sessions, and handle complex interactions through scenes.
+A production-ready Node.js Telegram Bot built with [Telegraf](https://github.com/telegraf/telegraf), featuring webhook support, session management, scene handling, and Vercel deployment. This bot demonstrates best practices for building scalable Telegram bots with proper error handling, logging, validation, and security measures.
 
 [![Live Demo](https://img.shields.io/badge/Medium-12100E?style=for-the-badge&logo=medium&logoColor=white)](https://medium.com/@ehsanmokhtari/node-js-serverless-telegram-bot-with-telegraf-library-and-vercel-deployment-using-webhook-43262c234718)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 
-## Features
+## 🚀 Live Demo
 
-- Webhook Integration: Utilizes webhooks for real-time event handling and user interaction responses.
-- Command Handling: Supports various commands to enhance user experience and functionality.
-- Message Management: Efficiently manages incoming messages for seamless communication.
-- User Session Management: Keeps track of user sessions for personalized interactions.
-- Scene Handling: Facilitates complex interactions through scenes, allowing for multi-step conversations.
-- Scalability: Deployed on Vercel, enabling easy scalability in a serverless environment.
-- Easy Deployment: Simplifies deployment and management through Vercel's platform.
-- Real-time Responses: Provides immediate feedback to users, enhancing engagement.
+Try the bot: [@TelegrafWebhookTestBot](https://t.me/TelegrafWebhookTestBot)
 
-## Prerequisites
+## ✨ Features
 
-- Node.js: Version 14 or higher installed on your machine.
-- npm: Comes with Node.js; ensure it is updated.
-- PostgreSQL Database: A PostgreSQL instance to store session data. We utilize Vercel Storage for this purpose.
-- Telegram Bot Token: Create a bot using BotFather and obtain your bot token.
-- Vercel Account: Sign up for a free account at Vercel.
+### Core Functionality
+- **🤖 Telegram Bot**: Full-featured bot with command handling, message processing, and scene management
+- **🔄 Webhook Support**: Real-time event handling with webhook integration for production deployment
+- **💾 Session Management**: Persistent user sessions using PostgreSQL with Sequelize ORM
+- **🎭 Scene System**: Multi-step conversation flows with Telegraf scenes (echo, greeter, super-wizard)
+- **📝 Message Handling**: Support for text messages, stickers, and various media types
 
-## Getting Started
+### Production Ready
+- **🛡️ Security**: Input validation, sanitization, CORS, and Helmet security headers
+- **📊 Logging**: Comprehensive logging with Winston (file and console output)
+- **⚠️ Error Handling**: Robust error handling with custom error classes and graceful degradation
+- **🔍 Health Monitoring**: Health check endpoints and request/response logging
+- **🚀 Performance**: Compression, request size limits, and optimized middleware
 
-### Installation
+### Developer Experience
+- **📘 TypeScript**: Full TypeScript support with strict type checking
+- **🧪 Testing**: Jest testing framework with coverage reporting
+- **🔧 Linting**: ESLint with TypeScript rules for code quality
+- **📦 Build System**: Automated build process with TypeScript compilation
+- **🐳 Docker**: Containerization support for easy deployment
 
-1. Clone the repository:
+## 📋 Prerequisites
 
+- **Node.js**: Version 18 or higher
+- **npm**: Version 8 or higher
+- **PostgreSQL**: Database instance for session storage (Vercel Postgres recommended)
+- **Telegram Bot Token**: Create a bot via [@BotFather](https://t.me/BotFather)
+- **Vercel Account**: For deployment (optional for local development)
+
+## 🚀 Getting Started
+
+### 1. Clone and Install
+
+```bash
+git clone https://github.com/ehsanmokhtari/telegraf-webhook-bot.git
+cd telegraf-webhook-bot
+npm install
+```
+
+### 2. Environment Configuration
+
+Create a `.env` file in the root directory:
+
+```bash
+# Copy the example file
+cp .env.example .env
+```
+
+Update `.env` with your configuration:
+
+```env
+# Telegram Bot Configuration
+BOT_TOKEN=your_telegram_bot_token_here
+
+# Environment Configuration
+DEV=true
+NODE_ENV=development
+
+# Database Configuration
+POSTGRES_URL=postgresql://username:password@localhost:5432/database_name
+
+# Optional: Webhook Configuration
+WEBHOOK_URL=https://your-domain.vercel.app/api
+
+# Optional: Logging Configuration
+LOG_LEVEL=info
+```
+
+### 3. Database Setup
+
+Set up your PostgreSQL database:
+
+```bash
+# Using Vercel Postgres (recommended)
+vercel postgres create my-bot-db
+
+# Or use any PostgreSQL instance
+# Update POSTGRES_URL in your .env file
+```
+
+### 4. Development
+
+```bash
+# Start development server with hot reload
+npm run dev
+
+# Run type checking
+npm run type-check
+
+# Run linting
+npm run lint
+
+# Run tests
+npm test
+```
+
+### 5. Production Build
+
+```bash
+# Build the project
+npm run build
+
+# Start production server
+npm start
+```
+## 🚀 Deployment
+
+### Vercel Deployment (Recommended)
+
+1. **Deploy to Vercel**:
    ```bash
-   git clone https://github.com/ehsanmokhtari/telegraf-webhook-bot.git
-   cd telegraf-webhook-bot
-
-2. Install the dependencies:
-
-   ```bash
-   npm install
-   ```
+   # Install Vercel CLI
+   npm i -g vercel
    
-### Configuration
+   # Deploy
+   vercel
+   ```
 
-Create a .env file based on the .env.example file provided in the project directory:
+2. **Set Environment Variables** in Vercel dashboard:
+   - `BOT_TOKEN`: Your Telegram bot token
+   - `POSTGRES_URL`: Your database connection string
+   - `NODE_ENV`: `production`
+   - `DEV`: `false`
 
+3. **Set Webhook**:
    ```bash
-   cp .env.example .env
-   ```
-Then, Update the .env file with your specific configuration, including your Telegram bot token and database connection details.
-
-   ```plaintext
-   BOT_TOKEN = "<YOUR_BOT_TOKEN>"
-   DEV = true #In production, This must be set to false
-   POSTGRES_URL = "postgres[ql]://[username[:password]@][host[:port],]/database[?parameter_list]"
+   curl -F "url=https://your-app.vercel.app/api" \
+        https://api.telegram.org/bot<YOUR_BOT_TOKEN>/setWebhook
    ```
 
-### Running the Bot 
+### Docker Deployment
 
-To run your bot locally, use the following command:
+```bash
+# Build and run with Docker
+docker build -t telegraf-bot .
+docker run -p 3000:3000 --env-file .env telegraf-bot
+```
 
-   ```bash
-   npm run dev
-   ```
-## Vercel Deployment
+### Manual Deployment
 
-For detailed instructions on deploying your bot to Vercel, check out the Medium article that explains the process step-by-step, including setting up your project, configuring environment variables, and managing deployments.
+```bash
+# Build the project
+npm run build
 
-[![Live Demo](https://img.shields.io/badge/Medium-12100E?style=for-the-badge&logo=medium&logoColor=white)](https://medium.com/@ehsanmokhtari/node-js-serverless-telegram-bot-with-telegraf-library-and-vercel-deployment-using-webhook-43262c234718)
+# Start production server
+npm start
+```
 
-## Handling Webhooks
+## 🔧 Bot Commands
 
-This bot is configured to handle webhooks, allowing it to receive updates from Telegram in real-time. When deployed, you can set the webhook URL to point to your Vercel deployment.
+- `/start` - Welcome message and command list
+- `/help` - Show available commands
+- `/greeter` - Enter greeter scene
+- `/echo` - Enter echo scene (echoes your messages)
+- `/superwizard` - Enter super wizard scene
+- Say `hi` - Get a friendly greeting
+- Send a sticker - Get a fun response
+- Send any text - Get a response
 
-To set the webhook, use the following command, replacing YOUR_VERCEL_URL with your actual Vercel deployment URL:
+## 📊 Monitoring
 
-   ```bash
-   curl -F "url=https://<YOUR_VERCEL_URL>/api" https://api.telegram.org/bot<TOKEN>/setWebhook
-   ```
+- **Health Check**: `GET /health` - Bot status and uptime
+- **Logs**: Check `logs/` directory for application logs
+- **Metrics**: Response times and error rates logged automatically
 
-## Contributing
+## 🧪 Testing
 
-Contributions are welcome! Please feel free to submit a pull request.
+```bash
+# Run all tests
+npm test
 
-## Demo
+# Run tests with coverage
+npm run test:coverage
 
-You can see a working version of the bot at [@TelegrafWebhookTestBot](https://t.me/TelegrafWebhookTestBot)
+# Run tests in watch mode
+npm run test:watch
+```
+
+## 📝 Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run lint:fix` - Fix ESLint issues
+- `npm test` - Run tests
+- `npm run type-check` - TypeScript type checking
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [Telegraf](https://github.com/telegraf/telegraf) - Telegram Bot Framework
+- [Vercel](https://vercel.com) - Serverless Deployment Platform
+- [Sequelize](https://sequelize.org) - PostgreSQL ORM
+- [Winston](https://github.com/winstonjs/winston) - Logging Library
+
+## 📚 Learn More
+
+- [Medium Article](https://medium.com/@ehsanmokhtari/node-js-serverless-telegram-bot-with-telegraf-library-and-vercel-deployment-using-webhook-43262c234718) - Detailed deployment guide
+- [Telegraf Documentation](https://telegraf.js.org/) - Bot framework docs
+- [Vercel Documentation](https://vercel.com/docs) - Deployment platform docs
